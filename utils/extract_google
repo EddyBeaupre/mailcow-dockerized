@@ -1,0 +1,50 @@
+#!/bin/bash
+
+function digRecord () {
+  data="$(dig +short @8.8.8.8 $1 TXT)"
+  data="${data%\"}"
+  data="${data#\"}"
+  echo "${data}"
+}
+
+blocklist="$(digRecord _spf.google.com)"
+blockarray=()
+ip4arr=()
+ip6arr=()
+
+for i in ${blocklist}; do
+  if [[ $i == "include:"* ]]; then
+    i="${i#\include:}"
+    blockarray+=(${i})
+  fi
+done
+for i in "${blockarray[@]}"; do
+  spf="$(digRecord $i)"
+  for j in ${spf}; do
+    if [[ $j == "ip4:"* ]]; then
+      j="${j#\ip4:}"
+      ip4arr+=(${j})
+    fi
+    if [[ $j == "ip6:"* ]]; then
+      j="${j#\ip6:}"
+      j=$(echo "[${j}" | tr "/" "]/")
+      ip6arr+=(${j})
+    fi
+  done
+done
+
+for i in "${ip4arr[@]}"; do
+  echo -n "$i "
+done
+
+echo ""
+
+for i in "${ip6arr[@]}"; do
+  echo -n "$i "
+done
+
+echo ""
+
+ 
+
+
