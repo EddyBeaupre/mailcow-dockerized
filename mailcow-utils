@@ -1,0 +1,256 @@
+#!/bin/bash
+
+MAILCOW_HOME="/usr/local/mailcow-dockerized"
+GSUITE_RELAY="smtp-relay.gmail.com:587"
+
+source ${MAILCOW_HOME}/mailcow.conf
+
+
+function digRecord () {
+  local _d="$(dig +short @8.8.8.8 $1 TXT)"
+  _d="${_d%\"}"
+  _d="${_d#\"}"
+  echo "${_d}"
+}
+
+function getGoogleNetworks () {
+  local _bl="$(digRecord _spf.google.com)"
+  local _ba=()
+  local _ip=()
+  local _i
+  local _j
+
+  for _i in ${_bl}; do
+    if [[ ${_i} == "include:"* ]]; then
+      _i="${_i#\include:}"
+      _ba+=(${_i})
+    fi
+  done
+
+  for _i in "${_ba[@]}"; do
+    local _s="$(digRecord ${_i})"
+    for _j in ${_s}; do
+      case ${_j} in
+        ip4:*)
+          _j="${_j#\ip4:}"
+          _ip+=("${_j}")
+          ;;
+        ip6:*)
+          _j="${_j#\ip6:}"
+          _j="[${_j/\//]\/}"
+          _ip+=("${_j}")
+          ;;
+      esac
+    done
+  done
+  
+  echo "${_ip[@]}"
+}
+
+function getDockerVolumes() {
+  local _vmaps=()
+  local _j
+  local _pf=false
+  local _vl=false
+  (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose config) | while read _j; do
+    case ${_j} in
+      postfix-mailcow:)
+        _pf=true
+        ;;
+      volumes:)
+        if [ "${_pf}" = true ] ; then
+          _vl=true
+        fi
+        ;;
+      -*)
+        if [ "${_pf}" = true ] && [ "${_vl}" = true ]; then
+          echo -n " ${_vmaps} ${_j#\- }"
+        fi
+        ;;
+      *)
+        if [ "${_pf}" = true ] && [ "${_vl}" = true ]; then
+          _pf=false
+          _vl=false
+        fi
+        ;;
+    esac
+  done
+}
+
+function dockerToPhysical () {
+  local _vm="$(getDockerVolumes)"
+  shopt -s extglob
+  local _vm="${_vm##*( )}"
+  shopt -u extglob
+  local _i
+  
+  for _i in ${_vm}; do
+    IFS=':' read -ra _a <<< "${_i}"
+    if [[ "${1}" == "${_a[1]}" ]]; then
+      echo ${_a[0]}
+    fi
+  done
+}
+
+function physicalToDocker () {
+  local _vm="$(getDockerVolumes)"
+  shopt -s extglob
+  local _vm="${_vm##*( )}"
+  shopt -u extglob
+  local _i
+  
+  for _i in ${_vm}; do
+    IFS=':' read -ra _a <<< "${_i}"
+    if [[ "${1}" == "${_a[0]}" ]]; then
+      echo ${_a[1]}
+    fi
+  done
+}
+
+function showHelp () {
+  printf "Utility for configuring some parameters on mailcow-docker\n\n"
+  printf "Usage:\n"
+  printf "  %s COMMAND\n" "$(basename ${0})"
+  printf "  %s COMMAND -?|--help\n\n" "$(basename ${0})"
+  printf "COMMAND\n"
+  printf "  -c, --certbot-post            Update SSL certificate and restart servers\n"
+  printf "  -n, --add-gsuite-networks     Add Google's mail servers to the list of network\n"
+  printf "                                allowed to transfert messages to this hosts.\n"
+  printf "  -p, --edit-postfix-config     Edit postfix's main.cf configuration\n"
+  printf "  -r, --set-gsuite-relay        Use GSuite's smtp as relay host\n"
+  printf "  -t, --edit-transport-maps     Edit and rebuild the transport map\n\n"
+  printf "  -?, --help                    Show this help\n\n"
+  printf "I am lazy and i know i will forget all theses modificatins next time\n"
+  printf "i try to install mailcow. So that's why i've wrote this little script\n"
+  printf "so i can do all those modification to bind GSuite, certbot and\n"
+  printf "Mailcow\n\n"
+  printf "Do not forget to create dunny email account for emails hosted on GSuite.\n"
+  printf "Else local users will not be able to write to those accounts.\n\n"
+  printf "This mailcow server must be configured as host in GSuite and authorized\n"
+  printf "to use GSuite's SMTP relay (Application/GSuite/GMail Parameters/Advanced)\n\n"
+  printf "Don't forget to edit MAILCOW_HOME and GSUITE_RELAY before using this script\n\n"
+  exit 0;
+}
+
+TEMP=$(getopt -o :cnprt? --long certbot-post,add-gsuite-networks,set-gsuite-relay,edit-postfix-config,edit-transport-maps,help -n "$(basename ${0})" -- "$@")
+eval set -- "$TEMP"
+
+while true ; do
+    case "$1" in
+        -c|--certbot-post) ARG_CMD="CertBot" ; shift ; break ;;
+        -n|--add-gsuite-networks) ARG_CMD="AddGSuiteNetworks" ; shift ; break ;;
+        -p|--edit-postfix-config) ARG_CMD="EditPostfixConfig" ; shift ; break ;;
+        -r|--set-gsuite-relay) ARG_CMD="setGSuiteRelay" ; shift ; break ;;
+        -t|--edit-transport-maps) ARG_CMD="EditPostfixMaps" ; shift ; break ;;
+        -?|--help) showHelp; exit 0 ;;
+        --) shift ; break ;;
+        *) showHelp ; exit 1 ;;
+    esac
+done
+
+case ${ARG_CMD} in
+  CertBot)
+    echo "Installing new certificates."
+    /bin/rm ${MAILCOW_HOME}/data/assets/ssl/cert.pem
+    /bin/rm ${MAILCOW_HOME}/data/assets/ssl/key.pem
+    /bin/ln $(/bin/readlink -f /etc/letsencrypt/live/${MAILCOW_HOSTNAME}/fullchain.pem) ${MAILCOW_HOME}/data/assets/ssl/cert.pem
+    /bin/ln $(/bin/readlink -f /etc/letsencrypt/live/${MAILCOW_HOSTNAME}/privkey.pem) ${MAILCOW_HOME}/data/assets/ssl/key.pem
+    (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose restart postfix-mailcow dovecot-mailcow nginx-mailcow)
+    ;;
+  EditPostfixConfig)
+    echo "Edit postfix"
+    editor ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose restart postfix-mailcow)
+    ;;
+  EditPostfixMaps)
+    echo "Edit transport maps"
+    transport_maps=()
+    vmaps="$(getDockerVolumes)"
+    shopt -s extglob
+    vmaps="${vmaps##*( )}"
+    shopt -u extglob
+    while read i; do
+      case ${i} in
+        transport_maps*)
+          for j in ${i}; do
+            case ${j} in
+              hash:*)
+                transport_maps+=("${j#\hash:}")
+                ;;
+            esac
+          done
+          ;;
+      esac
+    done < ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    if [ ${#transport_maps[@]} -eq 0 ]; then
+      dp="$(physicalToDocker ${MAILCOW_HOME}/data/conf/postfix)/transport_maps"
+      touch ${MAILCOW_HOME}/data/conf/postfix/transport_maps
+      editor ${MAILCOW_HOME}/data/conf/postfix/transport_maps
+      (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose exec postfix-mailcow postmap ${dp})
+      tf=$(mktemp ${MAILCOW_HOME}/data/conf/postfix/main.cf.XXXXXX)
+      found=false
+      while read i; do
+        case ${i} in
+          transport_maps*)
+            i="${i} ${dp}"
+            found=true
+            ;;
+        esac
+        echo "${i}" >> ${tf}
+      done < ${MAILCOW_HOME}/data/conf/postfix/main.cf
+      if [ "${found}" = false ] ; then
+        echo "transport_maps = ${dp}" >> ${tf}
+      fi
+      rm -f ${MAILCOW_HOME}/data/conf/postfix/main.cf.bak
+      mv ${MAILCOW_HOME}/data/conf/postfix/main.cf ${MAILCOW_HOME}/data/conf/postfix/main.cf.bak
+      mv ${tf} ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    else
+      for i in ${transport_maps[@]}; do
+        dp="$(dockerToPhysical $(dirname ${i}))/$(basename ${i})"
+        if [ -f ${dp} ]; then
+          editor ${dp}
+          (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose exec postfix-mailcow postmap ${i})
+        fi
+      done
+    fi
+    (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose restart postfix-mailcow)
+    ;;
+  setGSuiteRelay)
+    echo "Set GSuite Relay"
+    tf=$(mktemp ${MAILCOW_HOME}/data/conf/postfix/main.cf.XXXXXX)
+    while read i; do
+      case ${i} in
+        relayhost*)
+          i="relayhost = ${GSUITE_RELAY}"
+          ;;
+      esac
+      echo ${i} >> ${tf}
+    done < ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    rm -f ${MAILCOW_HOME}/data/conf/postfix/main.cf.bak
+    mv ${MAILCOW_HOME}/data/conf/postfix/main.cf ${MAILCOW_HOME}/data/conf/postfix/main.cf.bak
+    mv ${tf} ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose restart postfix-mailcow)
+    ;;
+  AddGSuiteNetworks)
+    echo "Add Google Networks"
+    gn="$(getGoogleNetworks)"
+    tf=$(mktemp ${MAILCOW_HOME}/data/conf/postfix/main.cf.XXXXXX)
+    rm -f temp.txt
+    while read i; do
+      case ${i} in
+        mynetworks*)
+          for j in ${gn}; do
+            if [[ "${i}" != *"${j}"* ]]; then
+              i="${i} ${j}"
+            fi
+          done
+          ;;
+      esac
+      echo ${i} >> ${tf}
+    done < ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    rm -f ${MAILCOW_HOME}/data/conf/postfix/main.cf.bak
+    mv ${MAILCOW_HOME}/data/conf/postfix/main.cf ${MAILCOW_HOME}/data/conf/postfix/main.cf.bak
+    mv ${tf} ${MAILCOW_HOME}/data/conf/postfix/main.cf
+    (cd ${MAILCOW_HOME}; /usr/local/bin/docker-compose restart postfix-mailcow)
+    ;;
+esac
