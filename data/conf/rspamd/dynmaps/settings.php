@@ -32,6 +32,11 @@ catch (PDOException $e) {
 ?>
 settings {
 <?php
+
+/*
+// Start custom scores for users
+*/
+
 $stmt = $pdo->query("SELECT DISTINCT `object` FROM `filterconf` WHERE `option` = 'highspamlevel' OR `option` = 'lowspamlevel'");
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -207,8 +212,11 @@ while ($row = array_shift($rows)) {
 	}
 ?>
 		apply "default" {
-			MAILCOW_MOO = -999.0;
+			MAILCOW_WHITE = -999.0;
 		}
+		symbols [
+			"MAILCOW_WHITE"
+		]
 	}
 <?php
 }
@@ -302,8 +310,11 @@ while ($row = array_shift($rows)) {
 	}
 ?>
 		apply "default" {
-			MAILCOW_MOO = 999.0;
+			MAILCOW_BLACK = 999.0;
 		}
+		symbols [
+			"MAILCOW_BLACK"
+		]
 	}
 <?php
 }

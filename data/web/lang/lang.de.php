@@ -1,14 +1,19 @@
 <?php
 /*
-//
-//  German language file
-//
-*/
+ * German language file
+ */
+
 $lang['footer']['loading'] = 'Einen Moment bitte...';
 $lang['header']['restart_sogo'] = 'SOGo neustarten';
 $lang['footer']['restart_sogo'] = 'SOGo neustarten';
 $lang['footer']['restart_now'] = 'Jetzt neustarten';
-$lang['footer']['restart_sogo_info'] = 'Einige Änderungen an Domains benötigen einen Neustart SOGos. Hier können Sie SOGo neustarten.<br /><br /><b>Wichtig:</b> Ein korrekter Neustart SOGos kann eine Weile in Anspruch nehmen, bitte warten Sie, bis der Prozess vollständig beendet wurde.';
+$lang['footer']['restart_sogo_info'] = 'Einige Änderungen an Domains benötigen einen Neustart SOGos. Hier können Sie SOGo neustarten.<br><br><b>Wichtig:</b> Ein korrekter Neustart SOGos kann eine Weile in Anspruch nehmen, bitte warten Sie, bis der Prozess vollständig beendet wurde.';
+
+$lang['footer']['confirm_delete'] = 'Löschen bestätigen';
+$lang['footer']['delete_these_items'] = 'Sind Sie sicher, dass die folgenden Elemente entfernt werden sollen?';
+$lang['footer']['delete_now'] = 'Jetzt löschen';
+$lang['footer']['cancel'] = 'Abbrechen';
+
 $lang['dkim']['confirm'] = 'Sind Sie sicher?';
 $lang['danger']['dkim_not_found'] = 'DKIM-Key nicht gefunden';
 $lang['danger']['dkim_remove_failed'] = 'Kann DKIM-Key nicht entfernen';
@@ -27,8 +32,8 @@ $lang['danger']['alias_empty'] = 'Alias-Adresse darf nicht leer sein';
 $lang['danger']['goto_empty'] = 'Ziel-Adresse darf nicht leer sein';
 $lang['danger']['policy_list_from_exists'] = 'Ein Eintrag mit diesem Wert existiert bereits';
 $lang['danger']['policy_list_from_invalid'] = 'Eintrag hat ungültiges Format';
-$lang['danger']['alias_invalid'] = 'Alias-Adrese ist ungültig';
-$lang['danger']['goto_invalid'] = 'Ziel-Adrese ist ungültig';
+$lang['danger']['alias_invalid'] = 'Alias-Adresse ist ungültig';
+$lang['danger']['goto_invalid'] = 'Ziel-Adresse ist ungültig';
 $lang['danger']['last_key'] = 'Letzter Key kann nicht gelöscht werden';
 $lang['danger']['alias_domain_invalid'] = 'Alias-Domain ist ungültig';
 $lang['danger']['target_domain_invalid'] = 'Ziel-Domain ist ungültig';
@@ -64,12 +69,12 @@ $lang['danger']['login_failed'] = 'Anmeldung fehlgeschlagen';
 $lang['danger']['mailbox_invalid'] = 'Mailboxname ist ungültig';
 $lang['danger']['resource_invalid'] = 'Ressourcenname ist ungültig';
 $lang['danger']['description_invalid'] = 'Ressourcenbeschreibung ist ungültig';
-$lang['danger']['mailbox_invalid_suggest'] = 'Mailboxname ist ungültig, meinten Sie vielleicht "%s"?';
+$lang['danger']['mailbox_invalid_suggest'] = 'Mailboxname ist ungültig, meinten Sie vielleicht %s?';
 $lang['danger']['is_alias'] = '%s lautet bereits eine Alias-Adresse';
 $lang['danger']['is_alias_or_mailbox'] = "Eine Mailbox oder ein Alias mit der Adresse %s ist bereits vorhanden";
 $lang['danger']['is_spam_alias'] = '%s lautet bereits eine Spam-Alias-Adresse';
 $lang['danger']['quota_not_0_not_numeric'] = 'Speicherplatz muss numerisch und >= 0 sein';
-$lang['danger']['domain_not_found'] = 'Domain "%s" nicht gefunden.';
+$lang['danger']['domain_not_found'] = 'Domain %s nicht gefunden';
 $lang['danger']['max_mailbox_exceeded'] = 'Anzahl an Mailboxen überschritten (%d von %d)';
 $lang['danger']['max_alias_exceeded'] = 'Anzahl an Alias-Adressen überschritten';
 $lang['danger']['mailbox_quota_exceeded'] = 'Speicherplatz überschreitet das Limit (max. %d MiB)';
@@ -129,6 +134,7 @@ $lang['user']['day'] = 'Tag';
 $lang['user']['week'] = 'Woche';
 $lang['user']['weeks'] = 'Wochen';
 $lang['user']['spamfilter'] = 'Spamfilter';
+$lang['admin']['spamfilter'] = 'Spamfilter';
 $lang['user']['spamfilter_wl'] = 'Whitelist';
 $lang['user']['spamfilter_wl_desc'] = 'Für E-Mail-Adressen, die vom Spamfilter <b>nicht</b> erfasst werden sollen. Die Verwendung von Wildcards ist gestattet.';
 $lang['user']['spamfilter_bl'] = 'Blacklist';
@@ -147,7 +153,7 @@ $lang['user']['spamfilter_default_score'] = 'Standardwert:';
 $lang['user']['spamfilter_hint'] = 'Der erste Wert beschreibt den "low spam score", der zweite Wert den "high spam score".';
 $lang['user']['spamfilter_table_domain_policy'] = "n.v. (Domainrichtlinie)";
 
-$lang['user']['tls_policy_warning'] = '<strong>Vorsicht:</strong> Entscheiden Sie sich unverschlüsselte Verbindungen abzulehnen, kann dies dazu führen, dass Kontakte Sie nicht mehr erreichen.<br />Nachrichten, die die Richtlinie nicht erfüllen, werden durch einen Hard-Fail im Mailsystem abgewiesen.<br />Diese Einstellung ist aktiv für die primäre Mailbox, für alle Alias-Adressen, die dieser Mailbox <b>direkt zugeordnet</b> sind (lediglich eine einzige Ziel-Adresse) und der Adressen, die sich aus Alias-Domains ergeben. Ausgeschlossen sind temporäre Aliasse ("Spam-Alias-Adressen"), Catch-All Alias-Adressen sowie Alias-Adressen mit mehreren Zielen.';
+$lang['user']['tls_policy_warning'] = '<strong>Vorsicht:</strong> Entscheiden Sie sich unverschlüsselte Verbindungen abzulehnen, kann dies dazu führen, dass Kontakte Sie nicht mehr erreichen.<br>Nachrichten, die die Richtlinie nicht erfüllen, werden durch einen Hard-Fail im Mailsystem abgewiesen.<br>Diese Einstellung ist aktiv für die primäre Mailbox, für alle Alias-Adressen, die dieser Mailbox <b>direkt zugeordnet</b> sind (lediglich eine einzige Ziel-Adresse) und der Adressen, die sich aus Alias-Domains ergeben. Ausgeschlossen sind temporäre Aliasse ("Spam-Alias-Adressen"), Catch-All Alias-Adressen sowie Alias-Adressen mit mehreren Zielen.';
 $lang['user']['tls_policy'] = 'Verschlüsselungsrichtlinie';
 $lang['user']['tls_enforce_in'] = 'TLS eingehend erzwingen';
 $lang['user']['tls_enforce_out'] = 'TLS ausgehend erzwingen';
@@ -159,12 +165,12 @@ $lang['user']['misc_delete_profile'] = 'Sonstige Kontoeinstellungen';
 $lang['user']['tag_handling'] = 'Umgang mit getaggten E-Mails steuern';
 $lang['user']['tag_in_subfolder'] = 'In Unterordner';
 $lang['user']['tag_in_subject'] = 'In Betreff';
-$lang['user']['tag_help_explain'] = 'Als Unterordner: Es wird ein Ordner mit dem Namen des Tags unterhalb der Inbox erstellt ("INBOX/Facebook").<br />
+$lang['user']['tag_help_explain'] = 'Als Unterordner: Es wird ein Ordner mit dem Namen des Tags unterhalb der Inbox erstellt ("INBOX/Facebook").<br>
 In Betreff: Der Name des Tags wird dem Betreff angefügt, etwa "[Facebook] Meine Neuigkeiten".';
 $lang['user']['tag_help_example'] = 'Beispiel für eine getaggte E-Mail-Adresse: ich<b>+Facebook</b>@example.org';
 $lang['user']['eas_reset'] = 'ActiveSync Geräte-Cache zurücksetzen';
 $lang['user']['eas_reset_now'] = 'Jetzt zurücksetzen';
-$lang['user']['eas_reset_help'] = 'In vielen Fällen kann ein ActiveSync Profil durch das Zurücksetzen des Caches repariert werden.<br /><b>Vorsicht:</b> Alle Elemente werden erneut heruntergeladen!';
+$lang['user']['eas_reset_help'] = 'In vielen Fällen kann ein ActiveSync Profil durch das Zurücksetzen des Caches repariert werden.<br><b>Vorsicht:</b> Alle Elemente werden erneut heruntergeladen!';
 
 $lang['user']['encryption'] = 'Verschlüsselung';
 $lang['user']['username'] = 'Benutzername';
@@ -185,17 +191,17 @@ $lang['start']['start_sogo'] = 'SOGo öffnen';
 $lang['start']['mailcow_apps_detail'] = 'Verwenden Sie mailcow Apps, um E-Mails abzurufen, Kalender- und Kontakte zu verwalten und vieles mehr.';
 $lang['start']['mailcow_panel'] = 'mailcow UI starten';
 $lang['start']['mailcow_panel_description'] = 'Die mailcow Steuerung steht sowohl für Administratoren als auch Mailbox-Benutzer zur Verfügung.';
-$lang['start']['mailcow_panel_detail'] = '<b>Domain-Administratoren</b> erstellen, verändern oder löschen Mailboxen, verwalten die Domäne und sehen sonstige Einstellungen ein.<br />
+$lang['start']['mailcow_panel_detail'] = '<b>Domain-Administratoren</b> erstellen, verändern oder löschen Mailboxen, verwalten die Domäne und sehen sonstige Einstellungen ein.<br>
 	Als <b>Mailbox-Benutzer</b> erstellen Sie hier zeitlich limitierte Aliasse, ändern das Verhalten des Spamfilters, setzen ein neues Passwort und vieles mehr.';
 $lang['start']['recommended_config'] = 'Empfohlene Software-Konfiguration (ohne ActiveSync)';
 $lang['start']['imap_smtp_server'] = 'IMAP- und SMTP-Server';
 $lang['start']['imap_smtp_server_description'] = 'Für eine optimale Verbindung empfehlen wir die Verwendung des <a href="%s" target="_blank"><b>Mozilla Thunderbirds</b></a>.';
 $lang['start']['imap_smtp_server_badge'] = 'E-Mail lesen und schreiben';
-$lang['start']['imap_smtp_server_auth_info'] = 'Bitte verwenden Sie Ihre vollständige E-Mail-Adresse sowie das PLAIN-Authentifizierungsverfahren.<br />
+$lang['start']['imap_smtp_server_auth_info'] = 'Bitte verwenden Sie Ihre vollständige E-Mail-Adresse sowie das PLAIN-Authentifizierungsverfahren.<br>
 Ihre Anmeldedaten werden durch die obligatorische Verschlüsselung entgegen des Begriffes "PLAIN" nicht unverschlüsselt übertragen.';
 $lang['start']['managesieve'] = 'ManageSieve';
 $lang['start']['managesieve_badge'] = 'E-Mail-Filter';
-$lang['start']['managesieve_description'] = 'Bitte verwenden Sie <b>Mozilla Thunderbirds</b> zusammen mit der <a style="text-decoration:none" target="_blank" href="%s"><b>Sieve Erweiterung</b></a>.<br />Nach dem Herunterladen der Erweiterung starten Sie Thunderbird, öffnen das Fenster für Erweiterungen und ziehen die heruntergeladene Datei in das offene Fenster.<br />Der Servername lautet <b>%s</b>, als Port konfigurieren Sie bitte <b>4190</b>. Die Anmeldedaten entsprechen dem E-Mail Login.';
+$lang['start']['managesieve_description'] = 'Bitte verwenden Sie <b>Mozilla Thunderbirds</b> zusammen mit der <a style="text-decoration:none" target="_blank" href="%s"><b>Sieve Erweiterung</b></a>.<br>Nach dem Herunterladen der Erweiterung starten Sie Thunderbird, öffnen das Fenster für Erweiterungen und ziehen die heruntergeladene Datei in das offene Fenster.<br>Der Servername lautet <b>%s</b>, als Port konfigurieren Sie bitte <b>4190</b>. Die Anmeldedaten entsprechen dem E-Mail Login.';
 $lang['start']['service'] = 'Dienstname';
 $lang['start']['encryption'] = 'Verschlüsselungstyp';
 $lang['start']['help'] = 'Hilfe ein-/ausblenden';
@@ -249,9 +255,12 @@ $lang['mailbox']['add_mailbox'] = 'Mailbox hinzufügen';
 $lang['mailbox']['add_resource'] = 'Ressource hinzufügen';
 $lang['mailbox']['add_alias'] = 'Alias hinzufügen';
 $lang['mailbox']['empty'] = 'Keine Einträge vorhanden';
+$lang['mailbox']['toggle_all'] = 'Alle';
+$lang['mailbox']['quick_actions'] = 'Aktionen';
+$lang['mailbox']['activate'] = 'Aktivieren';
+$lang['mailbox']['deactivate'] = 'Deaktivieren';
 
 $lang['info']['no_action'] = 'Keine Aktion anwendbar';
-
 $lang['delete']['title'] = 'Objekt entfernen';
 $lang['delete']['remove_domain_warning'] = '<b>Warnung:</b> Sie entfernen die Domain <b>%s</b>!';
 $lang['delete']['remove_domainalias_warning'] = '<b>Warnung:</b> Sie entfernen die Alias-Domain <b>%s</b>!';
@@ -262,7 +271,7 @@ $lang['delete']['remove_mailbox_warning'] = '<b>Warnung:</b> Sie entfernen die M
 $lang['delete']['remove_mailbox_details'] = 'Die Mailbox wird <b>vollständig und permanent</b> entfernt!';
 $lang['delete']['remove_resource_warning'] = '<b>Warnung:</b> Sie entfernen die Ressource <b>%s</b>!';
 $lang['delete']['remove_resource_details'] = 'Die Ressource wird <b>vollständig und permanent</b> entfernt!';
-$lang['delete']['remove_domain_details'] = 'Diese Aktion entfernt ebenfalls Domain-Aliasse.<br /><br /><b>Eine Domain muss leer sein, um entfernt zu werden.</b>';
+$lang['delete']['remove_domain_details'] = 'Diese Aktion entfernt ebenfalls Domain-Aliasse.<br><br><b>Eine Domain muss leer sein, um entfernt zu werden.</b>';
 $lang['delete']['remove_syncjob_details'] = 'Objekte dieses Sync-Jobs werden nicht mehr vom entfernten Server abgeholt.';
 $lang['delete']['remove_alias_details'] = 'Benutzer werden keine Nachrichten mehr von dieser Adresse erhalten und versenden koennen!</b>';
 $lang['delete']['remove_button'] = 'Entfernen';
@@ -274,7 +283,7 @@ $lang['edit']['username'] = 'Benutzername';
 $lang['edit']['hostname'] = 'Servername';
 $lang['edit']['encryption'] = 'Verschlüsselungsmethode';
 $lang['edit']['maxage'] = 'Maximales Alter in Tagen einer Nachricht, die kopiert werden soll</br ><small>(0 = alle Nachrichten kopieren)</small>';
-$lang['edit']['subfolder2'] = 'Ziel-Ordner<br /><small>(leer = kein Unterordner)</small>';
+$lang['edit']['subfolder2'] = 'Ziel-Ordner<br><small>(leer = kein Unterordner)</small>';
 $lang['edit']['mins_interval'] = 'Intervall (min)';
 $lang['edit']['exclude'] = 'Elemente ausschließen (Regex)';
 $lang['edit']['archive'] = 'Archiv-Zugriff';
@@ -324,8 +333,8 @@ $lang['add']['hostname'] = 'Servername';
 $lang['add']['port'] = 'Port';
 $lang['add']['username'] = 'Benutzername';
 $lang['add']['enc_method'] = 'Verschlüsselungsmethode';
-$lang['add']['maxage'] = 'Maximum age of messages that will be polled from remote (0 = ignore age)';
-$lang['add']['subfolder2'] = 'Sync into subfolder on destination';
+$lang['add']['maxage'] = 'Maximales Alter von Nachrichten, welche vom Remote abgefragt werden (0 = Alter ignorieren)';
+$lang['add']['subfolder2'] = 'Synchronisation in Unterordner am Ziel';
 $lang['add']['mins_interval'] = 'Abrufintervall (Minuten)';
 $lang['add']['exclude'] = 'Elemente ausschließen (Regex)';
 $lang['add']['delete2duplicates'] = 'Lösche Duplikate im Ziel';
@@ -382,33 +391,38 @@ $lang['login']['login'] = 'Anmelden';
 $lang['login']['previous'] = 'Vorherige Seite';
 $lang['login']['delayed'] = 'Login wurde zur Sicherheit um %s Sekunde/n verzögert.';
 
-$lang['tfa']['tfa'] = "Two-Factor Authentication";
-$lang['tfa']['set_tfa'] = "Konfiguriere Two-Factor Authentication Methode";
+$lang['tfa']['tfa'] = "Zwei-Faktor-Authentifizierung";
+$lang['tfa']['set_tfa'] = "Konfiguriere Zwei-Faktor-Authentifizierungsmethode";
 $lang['tfa']['yubi_otp'] = "Yubico OTP Authentifizierung";
 $lang['tfa']['key_id'] = "Ein Name für diesen YubiKey";
+$lang['tfa']['key_id_totp'] = "Ein eindeutiger Name";
 $lang['tfa']['api_register'] = 'mailcow verwendet die Yubico Cloud API. Ein API-Key für den Yubico Stick kann <a href="https://upgrade.yubico.com/getapikey/" target="_blank">hier</a> bezogen werden.';
 $lang['tfa']['u2f'] = "U2F Authentifizierung";
 $lang['tfa']['hotp'] = "HOTP Authentifizierung";
 $lang['tfa']['totp'] = "TOTP Authentifizierung";
 $lang['tfa']['none'] = "Deaktiviert";
-$lang['tfa']['delete_tfa'] = "Deaktiviere TFA";
-$lang['tfa']['disable_tfa'] = "Deaktiviere TFA bis zur nächsten erfolgreichen Anmeldung";
-$lang['tfa']['confirm_tfa'] = "Please confirm your one-time password in the below field";
+$lang['tfa']['delete_tfa'] = "Deaktiviere 2FA";
+$lang['tfa']['disable_tfa'] = "Deaktiviere 2FA bis zur nächsten erfolgreichen Anmeldung";
+$lang['tfa']['confirm_tfa'] = "Bitte bestätigen Sie Ihr Einmal-Passwort im unteren Feld";
 $lang['tfa']['confirm'] = "Bestätigen";
 $lang['tfa']['otp'] = "Einmalpasswort";
+$lang['tfa']['totp'] = "Time-based OTP (Google Authenticator etc.)";
 $lang['tfa']['trash_login'] = "Login verwerfen";
 $lang['tfa']['select'] = "Bitte auswählen";
-$lang['tfa']['waiting_usb_auth'] = "<i>Warte auf USB-Gerät...</i><br /><br />Bitte jetzt den vorgesehenen Taster des U2F USB-Gerätes berühren.";
-$lang['tfa']['waiting_usb_register'] = "<i>Warte auf USB-Gerät...</i><br /><br />Bitte zuerst das obere Passwortfeld ausfüllen und erst dann den vorgesehenen Taster des U2F USB-Gerätes berühren.";
+$lang['tfa']['waiting_usb_auth'] = "<i>Warte auf USB-Gerät...</i><br><br>Bitte jetzt den vorgesehenen Taster des U2F USB-Gerätes berühren.";
+$lang['tfa']['waiting_usb_register'] = "<i>Warte auf USB-Gerät...</i><br><br>Bitte zuerst das obere Passwortfeld ausfüllen und erst dann den vorgesehenen Taster des U2F USB-Gerätes berühren.";
+$lang['tfa']['scan_qr_code'] = "Bitte scannen Sie jetzt den angezeigten QR-Code:.";
+$lang['tfa']['enter_qr_code'] = "Falls Sie den angezeigten QR-Code nicht scannen können, verwenden Sie bitte nachstehenden Sicherheitsschlüssel";
+$lang['tfa']['confirm_totp_token'] = "Bitte bestätigen Sie die Änderung durch Eingabe eines generierten Tokens";
 
 $lang['admin']['search_domain_da'] = 'Domains durchsuchen';
-$lang['admin']['restrictions'] = 'Postifx Restriktionen';
-$lang['admin']['rr'] = 'Postifx Recipient Restriktionen';
-$lang['admin']['sr'] = 'Postifx Sender Restriktionen';
+$lang['admin']['restrictions'] = 'Postfix Restriktionen';
+$lang['admin']['rr'] = 'Postfix Empfänger Restriktionen';
+$lang['admin']['sr'] = 'Postfix Sender Restriktionen';
 $lang['admin']['reset_defaults'] = 'Standard wiederherstellen';
 $lang['admin']['r_inactive'] = 'Inaktive Restriktionen';
 $lang['admin']['r_active'] = 'Aktive Restriktionen';
-$lang['admin']['r_info'] = 'Ausgegraute/deaktivierte Elemente sind mailcow nicht bekannt und können nicht in die Liste inaktiver Elemente verschoben werden. Unbekannte Restriktionen werden trotzdem in Reihenfolge der Erscheinung gesetzt.<br />Sie können ein Element in der Datei <code>inc/vars.local.inc.php</code> als bekannt hinzufügen, um es zu bewegen.';
+$lang['admin']['r_info'] = 'Ausgegraute/deaktivierte Elemente sind mailcow nicht bekannt und können nicht in die Liste inaktiver Elemente verschoben werden. Unbekannte Restriktionen werden trotzdem in Reihenfolge der Erscheinung gesetzt.<br>Sie können ein Element in der Datei <code>inc/vars.local.inc.php</code> als bekannt hinzufügen, um es zu bewegen.';
 $lang['admin']['public_folders'] = 'Öffentliche Ordner';
 $lang['admin']['public_folders_text'] = 'Ein Namespace "Public" wird erstellt. Der untenstehende Ordnername betrifft den Namen der automatisch erstellten Mailbox in diesem Namespace.';
 $lang['admin']['public_folder_name'] = 'Ordnername <small>(alphanumerisch)</small>';
@@ -436,6 +450,7 @@ $lang['admin']['configuration'] = 'Konfiguration';
 $lang['admin']['password'] = 'Passwort';
 $lang['admin']['password_repeat'] = 'Passwort (Wiederholung)';
 $lang['admin']['active'] = 'Aktiv';
+$lang['admin']['inactive'] = 'Inaktiv';
 $lang['admin']['action'] = 'Aktion';
 $lang['admin']['add_domain_admin'] = 'Domain-Administrator hinzufügen';
 $lang['admin']['admin_domains'] = 'Domain-Zuweisungen';
@@ -450,11 +465,24 @@ $lang['admin']['unchanged_if_empty'] = 'Unverändert, wenn leer';
 $lang['admin']['yes'] = '&#10004;';
 $lang['admin']['no'] = '&#10008;';
 $lang['admin']['access'] = 'Zugang';
-$lang['admin']['invalid_max_msg_size'] = 'Invalid max. message size'; // NEEDS TRANSLATION
-$lang['admin']['site_not_found'] = 'Kann mailcow Site-Konfiguration nicht finden';
-$lang['admin']['public_folder_empty'] = 'Public folder name must not be empty'; // NEEDS TRANSLATION
+$lang['admin']['invalid_max_msg_size'] = 'Maximale Nachrichtengröße ungültig';
+$lang['admin']['site_not_found'] = 'Kann mailcow Seitenkonfiguration nicht finden';
+$lang['admin']['public_folder_empty'] = 'Öffentlicher Ordner-Name darf nicht leer sein';
 $lang['admin']['set_rr_failed'] = 'Kann Postfix Restriktionen nicht setzen';
 $lang['admin']['no_record'] = 'Kein Eintrag';
 $lang['admin']['filter_table'] = 'Tabelle Filtern';
 $lang['admin']['empty'] = 'Keine Einträge vorhanden';
-?>
+$lang['admin']['time'] = 'Zeit';
+$lang['admin']['priority'] = 'Gewichtung';
+$lang['admin']['refresh'] = 'Neu laden';
+$lang['admin']['logs'] = 'Logs';
+$lang['admin']['message'] = 'Nachricht';
+$lang['admin']['forwarding_hosts'] = 'Weiterleitungs-Hosts';
+$lang['admin']['forwarding_hosts_hint'] = 'Eingehende Nachrichten werden von den hier gelisteten Hosts bedingungslos akzeptiert. Diese Hosts werden dann nicht mit DNSBLs abgeglichen oder Greylisting unterworfen. Von ihnen empfangener Spam wird nie abgelehnt, optional kann er aber in den Spam-Ordner einsortiert werden. Die übliche Verwendung für diese Funktion ist, um Mailserver anzugeben, auf denen eine Weiterleitung zu Ihrem Mailcow-Server eingerichtet wurde.';
+$lang['admin']['forwarding_hosts_add_hint'] = 'Sie können entweder IPv4/IPv6-Adressen, Netzwerke in CIDR-Notation, Hostnamen (die zu IP-Adressen aufgelöst werden), oder Domainnamen (die zu IP-Adressen aufgelöst werden, indem ihr SPF-Record abgefragt wird oder, in dessen Abwesenheit, ihre MX-Records) angeben.';
+$lang['admin']['host'] = 'Host';
+$lang['admin']['source'] = 'Quelle';
+$lang['admin']['add_forwarding_host'] = 'Weiterleitungs-Host hinzufügen';
+$lang['delete']['remove_forwardinghost_warning'] = '<b>Warnung:</b> Sie entfernen den Weiterleitungs-Host <b>%s</b>!';
+$lang['success']['forwarding_host_removed'] = "Weiterleitungs-Host %s wurde entfernt";
+$lang['success']['forwarding_host_added'] = "Weiterleitungs-Host %s wurde hinzugefügt";

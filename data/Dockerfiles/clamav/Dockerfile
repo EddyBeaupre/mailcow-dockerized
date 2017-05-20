@@ -1,40 +1,26 @@
-FROM debian:latest
-MAINTAINER https://m-ko.de Markus Kosmal <code@cnfg.io>
+FROM alpine
+LABEL maintainer "https://m-ko.de Markus Kosmal <code@cnfg.io>"
 
-# Debian Base to use
-ENV DEBIAN_VERSION jessie
-
-# initial install of av daemon
-RUN echo "deb http://http.debian.net/debian/ $DEBIAN_VERSION main contrib non-free" > /etc/apt/sources.list && \
-    echo "deb http://http.debian.net/debian/ $DEBIAN_VERSION-updates main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/ $DEBIAN_VERSION/updates main contrib non-free" >> /etc/apt/sources.list && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y -qq \
-        clamav-daemon \
-        clamav-freshclam \
-        libclamunrar7 \
-        wget && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add -U --no-cache clamav clamav-libunrar clamav-daemon bash curl
 
 # initial update of av databases
-RUN wget -O /var/lib/clamav/main.cvd http://db.local.clamav.net/main.cvd && \
-    wget -O /var/lib/clamav/daily.cvd http://db.local.clamav.net/daily.cvd && \
-    wget -O /var/lib/clamav/bytecode.cvd http://db.local.clamav.net/bytecode.cvd && \
-    chown clamav:clamav /var/lib/clamav/*.cvd
+COPY dl_files.sh /dl_files.sh
+RUN chmod +x /dl_files.sh
+
+# pre-download defintions
+RUN set -ex; \
+	/dl_files.sh && \
+	apk del curl
 
 # permission juggling
-RUN mkdir /var/run/clamav && \
-    chown clamav:clamav /var/run/clamav && \
-    chmod 750 /var/run/clamav
+RUN mkdir -p /run/clamav && \
+	chown clamav:clamav /run/clamav && \
+	chmod 750 /run/clamav
 
 # av configuration update
 RUN sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
-    echo "TCPSocket 3310" >> /etc/clamav/clamd.conf && \
-    sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
-
-# volume provision
-VOLUME ["/var/lib/clamav"]
+	echo "TCPSocket 3310" >> /etc/clamav/clamd.conf && \
+	sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/freshclam.conf
 
 # port provision
 EXPOSE 3310

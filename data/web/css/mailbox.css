@@ -12,8 +12,18 @@ table.footable>tbody>tr.footable-empty>td {
   overflow: visible !important;
 }
 .footer-add-item {
-  text-align:center;
-  font-style: italic;
   display:block;
+  text-align: center;
+  font-style: italic;
   padding: 10px;
+  background: #F5F5F5;
+}
+@media (min-width: 992px) {
+  .container {
+      width: 80%;
+  }
+}
+.mass-actions-mailbox {
+  user-select: none;
+  padding:10px 0 10px 10px;
 }
